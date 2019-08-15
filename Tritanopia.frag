@@ -40,10 +40,13 @@ vec3 tritanopia(vec3 c) {
 }
 
 void fragment() {
-    vec4 originalColor4 = texture2D(_Layer,gl_TexCoord[0].xy);
+    vec4 originalColor4 = texture2D(_Layer, gl_TexCoord[0].xy,0.0);
     originalColor4 = clamp(originalColor4, 0.0, 1.0);
     
-    vec3 originalColor = originalColor4.rgb;
+    vec3 originalColor = vec3(1,1,1);
+    originalColor.r = originalColor4.r;
+    originalColor.g = originalColor4.g;
+    originalColor.b = originalColor4.b;
 
     originalColor = rgbtosrgb(originalColor);
     originalColor = srgbtolms(originalColor);
@@ -54,8 +57,12 @@ void fragment() {
     outputColor = lmstosrgb(outputColor);
     outputColor = srgbtorgb(outputColor);
     
-    vec4 outputColor4 = vec4(originalColor4.a,outputColor);
-    gl_FragColor = vec4(outputColor4);
+    vec4 outputColor4 = vec4(1,1,1,1);
+    outputColor4.a  = originalColor4.a;
+    outputColor4.r = outputColor.r;
+    outputColor4.g = outputColor.g;
+    outputColor4.b = outputColor.b;
+    gl_FragColor = outputColor4;
 }
 void main()
 {
